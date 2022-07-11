@@ -108,7 +108,7 @@ const EditorPage = () => {
     }
     console.log(codeRef.current);
     // Post request to compile endpoint
-    Axios.post(`https://wcs-devcamp.herokuapp.com/`, {
+    Axios.post(`https://code-colab-compile.herokuapp.com/`, {
       code: codeRef.current,
 
       language: userLang,

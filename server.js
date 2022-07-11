@@ -53,25 +53,25 @@ app.use((req, res, next) => {
 });
 
 const userSocketMap = {};
-// function getAllConnectedClients(roomId) {
-//   return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
-//     (socketId) => {
-//       return {
-//         socketId,
-//         username: userSocketMap[socketId],
-//       };
-//     }
-//   );
-// }
+function getAllConnectedClients(roomId) {
+  return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
+    (socketId) => {
+      return {
+        socketId,
+        username: userSocketMap[socketId],
+      };
+    }
+  );
+}
 io.on("connection", (socket) => {
   console.log("socket connected", socket.id);
 
   socket.on(ACTIONS.JOIN, ({ roomId, username }) => {
     userSocketMap[socket.id] = username;
     socket.join(roomId);
-    // const clients = getAllConnectedClients(roomId);
-    const clients = [{socketId:1, username:'Anik D'},
-            {socketId:2, username:'Soumya D'}]
+    const clients = getAllConnectedClients(roomId);
+    // const clients = [{socketId:1, username:'Anik D'},
+    //         {socketId:2, username:'Soumya D'}]
     clients.forEach(({ socketId }) => {
       io.to(socketId).emit(ACTIONS.JOINED, {
         clients,
